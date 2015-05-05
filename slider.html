@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>AssembleMe - Interactive Assembler</title>
+
+  <link rel='stylesheet' href='jquery-ui.css'>
+  <link rel='stylesheet' href='style.css'>
+  <style>* {
+    box-sizing: border-box;
+  }
+
+</style>
+
+<script src="io.js"></script>
+
+
+</head>
+
+<body>
+
+  <div class='all-slides'>
+    <h2 class='slides-title'>i386</h2>
+    <div class='slide'>push ebp</div>
+    <div class='slide'>mov ebp,esp</div>
+    <div class='slide'>mov eax,DWORD PTR [ebp+0x8]</div>
+    <div class='slide'>push esi</div>
+    <div class='slide'>mov esi,DWORD PTR [ebp+0xc]</div>
+    <div class='slide'>pop ebx</div>
+    <div class='slide'>pop esi</div>
+    <div class='slide'>pop ebp</div>
+    <div class='slide'>ret</div>
+  </div>
+  <div class='cloned-slides' id='cloned-slides'></div>
+
+  <script src='jquery.io.js'></script>
+
+  <script src="timer.io.js"></script>
+
+  <script src="slider.js"></script>
+  <script src="upload.js"></script>
+  <div class='main-content'>
+    <div class='upload-class'>
+<?php if ($_SERVER['REQUEST_METHOD'] == 'GET') { ?>
+
+        <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME'] ?>"
+        enctype="multipart/form-data">
+        <input type="file" name="doc"/>
+        <input type="submit" value="Send File"/>
+        </form>
+
+<?php } else {
+                if (isset($_FILES['doc']) &&
+                    ($_FILES['doc']['error'] == UPLOAD_ERR_OK)) {
+                        $oldPath = $_FILES['doc']['tmp_name'];
+                        $newPath = '/tmp/' . basename($_FILES['doc']['name']);
+
+                        if (move_uploaded_file($oldPath, $newPath)) {
+                                print "File moved from $oldPath to $newPath";
+                        } else {
+                                print "Couldn't move $oldPath to $newPath";
+                        }
+                } else {
+                        print "No valid file uploaded.";
+                }
+        }
+?>
+      <form enctype="multipart/form-data">        
+        <input class='btn btn-warning' id="file" name="file" type="file" />
+        <input id="uploadfile" type="button" value="Upload" />
+      </form>
+      <progress></progress>   
+    </div>
+  </div>
+
+</body>
+
+</html>
